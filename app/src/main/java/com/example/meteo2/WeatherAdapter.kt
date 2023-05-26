@@ -1,18 +1,17 @@
 package com.example.meteo2
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.meteo2.databinding.ItemWeatherDataBinding
 
-class WeatherAdapter(private val weatherDataList: List<WeatherDataResponse>) :
-    RecyclerView.Adapter<WeatherDataAdapter.ViewHolder>() {
+class WeatherAdapter(private val weatherDataList: List<WeatherData>) :
+    RecyclerView.Adapter<WeatherAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_weather_data, parent, false)
-        return ViewHolder(view)
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = ItemWeatherDataBinding.inflate(inflater, parent, false)
+        return ViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -24,15 +23,15 @@ class WeatherAdapter(private val weatherDataList: List<WeatherDataResponse>) :
         return weatherDataList.size
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val cityNameTextView: TextView = itemView.findViewById(R.id.cityNameTextView)
-        private val temperatureTextView: TextView = itemView.findViewById(R.id.temperatureTextView)
-        private val cloudinessTextView: TextView = itemView.findViewById(R.id.cloudinessTextView)
+    inner class ViewHolder(private val binding: ItemWeatherDataBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(weatherData: WeatherDataResponse) {
-            cityNameTextView.text = weatherData.cityName
-            temperatureTextView.text = weatherData.temperature.toString()
-            cloudinessTextView.text = weatherData.cloudiness.toString()
+        fun bind(weatherData: WeatherData) {
+            // Bind the weather data to the view
+            binding.cityNameTextView.text = weatherData.cityName
+            binding.temperatureTextView.text = weatherData.temperature.toString()
+            binding.cloudinessTextView.text = weatherData.cloudiness.toString()
         }
     }
+
 }
