@@ -2,6 +2,8 @@ package com.example.meteo2
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.meteo2.databinding.ActivityProgressBarBinding
 
 class ProgressBarActivity : AppCompatActivity() {
@@ -12,6 +14,15 @@ class ProgressBarActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_progress_bar)
+        val retrofit = RetrofitClientInstance.getRetrofitInstance()
+        val weatherService = retrofit.create(WeatherApi::class.java)
+        val weatherRepository = WeatherRepository(weatherService)
+
+        viewModelFactory = MyViewModelFactory(weatherRepository)
+        viewModel = ViewModelProvider(this, viewModelFactory)[MyViewModel::class.java]
+        binding = ActivityProgressBarBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = adapter
     }
 }

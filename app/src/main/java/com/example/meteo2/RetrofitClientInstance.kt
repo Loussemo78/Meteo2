@@ -7,13 +7,13 @@ object RetrofitClientInstance {
     private var retrofit: Retrofit? = null
     private const val BASE_URL = "https://api.openweathermap.org/data/2.5/"
 
-    fun getRetrofitInstance(): Retrofit {
+    fun getRetrofitInstance(): WeatherApi {
         if (retrofit == null) {
             retrofit = Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         }
-        return retrofit!!
+        return retrofit!!.create(WeatherApi::class.java)
     }
 }
